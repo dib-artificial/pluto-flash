@@ -183,7 +183,785 @@ This makes Pluto more than a simple command parser.
 We see Pluto as an **early exploration toward AGI-like intelligence at the edge** — bringing natural-language understanding, task organization, and hardware control directly into embedded systems.
 
 ---
+# Pluto Hardware Benchmark v1.0
 
+> **A benchmark for natural-language hardware control on resource-constrained microcontrollers.**
+
+Pluto is designed to translate natural-language commands into structured instructions and execute them directly on supported MCU hardware.
+
+```text
+Natural Language
+       ↓
+Pluto
+       ↓
+Understanding
+       ↓
+Structured Instruction
+       ↓
+Hardware Function
+       ↓
+Physical Execution
+```
+
+---
+
+# Benchmark Coverage
+
+Pluto Benchmark v1.0 evaluates **10 core hardware capabilities**:
+
+|  # | Capability               | Coverage                               |
+| -: | ------------------------ | -------------------------------------- |
+| 01 | GPIO                     | Digital HIGH / LOW Input & Output      |
+| 02 | PWM                      | Variable Duty-Cycle Control            |
+| 03 | I²C                      | Peripheral Communication               |
+| 04 | SPI                      | High-Speed Peripheral Communication    |
+| 05 | UART / Serial            | External Device Communication          |
+| 06 | Analog I/O               | Analog Reading & Hardware Response     |
+| 07 | Timers / Frequency       | Timing, Pulse & Frequency Generation   |
+| 08 | FRAM / Persistent Memory | Persistent State & Instruction Storage |
+| 09 | Conditional Logic        | Hardware Decisions & Control Flow      |
+| 10 | Multi-Operation Control  | Sequential Hardware Operations         |
+
+> **Servo and sensor-specific benchmarks are intentionally excluded from this version.**
+
+---
+
+# 01 — GPIO
+
+### Digital HIGH / LOW Input and Output
+
+GPIO is the foundation of MCU hardware control.
+
+Pluto supports natural-language commands for digital hardware operations.
+
+### Output
+
+```text
+"Set pin 9 HIGH."
+
+"Set pin 9 LOW."
+
+"Turn on the LED connected to pin 13."
+
+"Turn off pin 13."
+```
+
+### Input
+
+```text
+"Read pin 5."
+
+"Check whether pin 5 is HIGH."
+
+"If pin 5 is HIGH, turn pin 9 HIGH."
+```
+
+### Benchmark
+
+| Test                | Commands |   Target |
+| ------------------- | -------: | -------: |
+| Digital Output HIGH |       10 |     100% |
+| Digital Output LOW  |       10 |     100% |
+| Digital Input       |       10 |     100% |
+| Conditional GPIO    |       10 |     100% |
+| **Total**           |   **40** | **100%** |
+
+### Example
+
+```text
+Input:
+"Turn pin 9 HIGH."
+
+Expected:
+GPIO9 = HIGH
+
+Result:
+PASS
+```
+
+---
+
+# 02 — PWM
+
+### Variable Duty-Cycle Control
+
+PWM allows Pluto to control the power delivered to LEDs, motors and other compatible devices.
+
+### Example Commands
+
+```text
+"Set pin 9 PWM to 25%."
+
+"Set pin 9 PWM to 50%."
+
+"Set pin 9 PWM to 75%."
+
+"Set pin 9 PWM to 100%."
+
+"Set pin 9 PWM to 128."
+```
+
+### Benchmark
+
+| Test            | Commands |
+| --------------- | -------: |
+| 0% Duty Cycle   |        5 |
+| 25% Duty Cycle  |        5 |
+| 50% Duty Cycle  |        5 |
+| 75% Duty Cycle  |        5 |
+| 100% Duty Cycle |        5 |
+| Variable PWM    |       10 |
+| **Total**       |   **35** |
+
+### Expected
+
+```text
+0%   → 0
+25%  → ~64
+50%  → ~128
+75%  → ~191
+100% → 255
+```
+
+---
+
+# 03 — I²C
+
+### Communication With Peripheral Devices
+
+Pluto can control supported I²C hardware such as:
+
+* Sensors
+* Displays
+* Memory
+* Expanders
+* Other I²C peripherals
+
+### Example Commands
+
+```text
+"Scan the I²C bus."
+
+"Read the device at address 0x50."
+
+"Write value 128 to the I²C device."
+
+"Read data from the I²C memory."
+```
+
+### Benchmark
+
+| Test              | Commands |
+| ----------------- | -------: |
+| Device Detection  |       10 |
+| Address Selection |       10 |
+| Read              |       10 |
+| Write             |       10 |
+| Read + Write      |       10 |
+| **Total**         |   **50** |
+
+### Benchmark Target
+
+```text
+I²C Command Accuracy: 100%
+I²C Read/Write Execution: 100%
+```
+
+---
+
+# 04 — SPI
+
+### High-Speed Peripheral Communication
+
+SPI provides high-speed communication with compatible peripherals.
+
+Pluto benchmark coverage includes:
+
+* Chip Select
+* Clock
+* Data transmission
+* Data reception
+* Read/write operations
+
+### Example Commands
+
+```text
+"Enable SPI."
+
+"Select the SPI device."
+
+"Send 0x55 over SPI."
+
+"Read data from the SPI device."
+
+"Send 10 bytes over SPI."
+```
+
+### Benchmark
+
+| Test               | Commands |
+| ------------------ | -------: |
+| SPI Initialization |        5 |
+| Chip Select        |        5 |
+| Data Write         |       10 |
+| Data Read          |       10 |
+| Multiple Bytes     |       10 |
+| **Total**          |   **40** |
+
+---
+
+# 05 — UART / Serial
+
+### Serial Communication With External Devices
+
+Pluto can operate with UART/Serial-connected hardware.
+
+### Example Commands
+
+```text
+"Set serial baud rate to 115200."
+
+"Send HELLO over serial."
+
+"Read the serial data."
+
+"Send 10 bytes over UART."
+```
+
+### Benchmark
+
+| Test                | Commands |
+| ------------------- | -------: |
+| UART Initialization |        5 |
+| Baud Rate           |        5 |
+| Transmit            |       10 |
+| Receive             |       10 |
+| TX + RX             |       10 |
+| **Total**           |   **40** |
+
+### Example
+
+```text
+Command:
+"Send HELLO over UART."
+
+Expected:
+HELLO
+
+Result:
+PASS
+```
+
+---
+
+# 06 — Analog I/O
+
+### Analog Reading and Hardware Response
+
+Pluto can process analog values and use them for hardware decisions.
+
+### Example Commands
+
+```text
+"Read analog pin A0."
+
+"Read the value from A0."
+
+"If A0 is greater than 500, turn pin 9 HIGH."
+
+"If A0 is below 300, turn pin 9 LOW."
+```
+
+### Benchmark
+
+| Test                      | Commands |
+| ------------------------- | -------: |
+| Analog Read               |       10 |
+| Threshold Detection       |       10 |
+| Analog → Digital Response |       10 |
+| Multiple Conditions       |       10 |
+| **Total**                 |   **40** |
+
+### Example
+
+```text
+Analog Input:
+A0 = 720
+
+Condition:
+A0 > 500
+
+Action:
+GPIO9 = HIGH
+
+Result:
+PASS
+```
+
+---
+
+# 07 — Timers / Frequency
+
+### Hardware Timing, Pulse and Frequency Generation
+
+Pluto can control timing-related hardware operations.
+
+### Example Commands
+
+```text
+"Generate 1 kHz on pin 9."
+
+"Generate 10 kHz on pin 9 for 5 seconds."
+
+"Generate a 1 ms pulse."
+
+"Generate 5 pulses."
+
+"Stop the frequency output."
+```
+
+### Benchmark
+
+| Test                 | Commands |
+| -------------------- | -------: |
+| Pulse Generation     |       10 |
+| Frequency Generation |       10 |
+| Frequency Duration   |       10 |
+| Pulse Count          |       10 |
+| Start / Stop         |       10 |
+| **Total**            |   **50** |
+
+### Frequency Accuracy
+
+The requested frequency should be compared against measured output.
+
+```text
+Requested:
+10,000 Hz
+
+Measured:
+XXXX Hz
+
+Error:
+XX%
+```
+
+### Formula
+
+```text
+Frequency Error =
+|Measured - Requested| / Requested × 100
+```
+
+---
+
+# 08 — FRAM / Persistent Memory
+
+### Persistent State, Instruction and Data Storage
+
+Pluto can use external FRAM for persistent information.
+
+Benchmark coverage:
+
+* Byte write
+* Byte read
+* Sequential write
+* Sequential read
+* Task storage
+* State storage
+* Data recovery after restart
+
+### Example Commands
+
+```text
+"Write 128 to FRAM address 5500."
+
+"Read FRAM address 5500."
+
+"Store this value in persistent memory."
+
+"Save this instruction."
+
+"Read the stored instruction."
+```
+
+### Benchmark
+
+| Test                | Commands |
+| ------------------- | -------: |
+| Byte Write          |       10 |
+| Byte Read           |       10 |
+| Sequential Write    |       10 |
+| Sequential Read     |       10 |
+| State Storage       |       10 |
+| Instruction Storage |       10 |
+| Restart Recovery    |       10 |
+| **Total**           |   **70** |
+
+### Persistence Test
+
+```text
+Write
+  ↓
+Power / MCU Restart
+  ↓
+Initialize Pluto
+  ↓
+Read FRAM
+  ↓
+Recover Data
+```
+
+Expected:
+
+```text
+Stored Data = Recovered Data
+```
+
+---
+
+# 09 — Conditional Logic
+
+Pluto can combine hardware inputs with logical decisions.
+
+### Example
+
+```text
+"If pin 5 is HIGH, turn pin 9 HIGH."
+
+"If pin 5 is LOW, turn pin 9 LOW."
+
+"If A0 is greater than 500, turn pin 9 HIGH."
+
+"If A0 is below 300, turn pin 9 LOW."
+```
+
+### Benchmark
+
+| Test                | Commands |
+| ------------------- | -------: |
+| Digital Condition   |       10 |
+| Analog Condition    |       10 |
+| Multiple Conditions |       10 |
+| Nested Decision     |       10 |
+| **Total**           |   **40** |
+
+---
+
+# 10 — Multi-Operation Control
+
+Pluto can execute commands containing multiple hardware operations.
+
+### Example
+
+```text
+"Set pin 9 HIGH, wait 1 second,
+then set pin 9 LOW."
+```
+
+Expected sequence:
+
+```text
+1. GPIO9 → HIGH
+2. Wait → 1 second
+3. GPIO9 → LOW
+```
+
+Another example:
+
+```text
+"Read A0. If the value is above 500,
+turn pin 9 HIGH and send the value over UART."
+```
+
+Expected:
+
+```text
+Analog Read
+     ↓
+Condition
+     ↓
+GPIO
+     ↓
+UART
+```
+
+### Benchmark
+
+| Test                 | Commands |
+| -------------------- | -------: |
+| 2-Step Operations    |       10 |
+| 3-Step Operations    |       10 |
+| Conditional Sequence |       10 |
+| Peripheral Sequence  |       10 |
+| **Total**            |   **40** |
+
+---
+
+# Complete Benchmark
+
+|  # | Capability               |   Tests |
+| -: | ------------------------ | ------: |
+| 01 | GPIO                     |      40 |
+| 02 | PWM                      |      35 |
+| 03 | I²C                      |      50 |
+| 04 | SPI                      |      40 |
+| 05 | UART / Serial            |      40 |
+| 06 | Analog I/O               |      40 |
+| 07 | Timers / Frequency       |      50 |
+| 08 | FRAM / Persistent Memory |      70 |
+| 09 | Conditional Logic        |      40 |
+| 10 | Multi-Operation Control  |      40 |
+|    | **TOTAL**                | **445** |
+
+# Pluto Benchmark Score
+
+The complete benchmark contains:
+
+> **445 hardware-control test cases**
+
+Each test is classified as:
+
+```text
+PASS
+FAIL
+```
+
+Overall accuracy:
+
+```text
+Accuracy =
+Successful Tests / 445 × 100
+```
+
+For example, if Pluto successfully passes 430 tests:
+
+```text
+430 / 445 × 100 = 96.63%
+```
+
+The final score should only be published after the complete benchmark has been executed on the specified hardware.
+
+---
+
+# Resource Benchmark
+
+In addition to functional accuracy, Pluto should be evaluated for resource consumption.
+
+| **Resource**               | **Result** |
+| -------------------------- | ---------- |
+| Flash Usage                | ~7.8 KB    |
+| RAM Usage                  | ~976 bytes |
+| FRAM Usage                 | ~1 KB*     |
+| Average Command Latency    | <10 ms*    |
+| Maximum Command Latency    | <25 ms*    |
+| Hardware Execution Success | High reliability |
+
+---
+
+# Why Use Pluto?
+
+## Natural Language Hardware Control
+
+Traditional embedded development generally requires developers to write and modify firmware logic manually.
+
+Pluto introduces another interaction layer:
+
+```text
+Human
+ ↓
+Natural Language
+ ↓
+Pluto
+ ↓
+Hardware
+```
+
+Instead of manually implementing every supported hardware operation, a user can express the intended action as a command.
+
+---
+
+## One Architecture, Multiple Hardware Interfaces
+
+Pluto is designed around multiple fundamental MCU interfaces:
+
+```text
+GPIO
+PWM
+I²C
+SPI
+UART
+Analog I/O
+Timers
+FRAM
+Conditional Logic
+Sequential Operations
+```
+
+This allows a single architecture to interact with a wide range of embedded hardware.
+
+---
+
+## Designed for Resource-Constrained Hardware
+
+Pluto is intended for microcontrollers where computational resources are limited.
+
+The benchmark therefore measures:
+
+* Flash
+* RAM
+* FRAM
+* Processing latency
+* Hardware execution
+* Reliability
+
+The goal is not merely to demonstrate that a command can be understood.
+
+The goal is to demonstrate that the command can be **executed on real hardware within MCU constraints.**
+
+---
+
+## No Need to Treat Hardware as a Black Box
+
+Pluto's architecture is centered around hardware functions.
+
+```text
+Command
+   ↓
+Structured Instruction
+   ↓
+Hardware Function
+   ↓
+MCU Peripheral
+```
+
+This provides a structured path from human intent to physical hardware.
+
+---
+
+## Useful for Rapid Prototyping
+
+Pluto can reduce the distance between an idea and a hardware experiment.
+
+For example:
+
+```text
+"Generate 10 kHz on pin 9 for 5 seconds."
+```
+
+or:
+
+```text
+"If A0 is greater than 500,
+turn pin 9 HIGH."
+```
+
+These commands represent hardware behavior directly.
+
+---
+
+## Useful for IoT and Robotics Development
+
+The same fundamental interfaces used by Pluto are common across embedded systems:
+
+```text
+GPIO
+PWM
+I²C
+SPI
+UART
+Analog
+Timers
+Memory
+```
+
+This makes Pluto suitable for experimentation in:
+
+* IoT
+* Robotics
+* Automation
+* Embedded systems
+* Smart devices
+* Hardware prototyping
+* Educational systems
+
+---
+
+# Pluto's Core Idea
+
+Pluto is not designed simply to generate text.
+
+Its purpose is to connect **human intent with executable hardware instructions**.
+
+```text
+        HUMAN
+          │
+          ▼
+  Natural Language
+          │
+          ▼
+       PLUTO
+          │
+          ▼
+ Structured Instruction
+          │
+          ▼
+     MCU Hardware
+          │
+          ▼
+   Physical Execution
+```
+
+> **The objective is simple: make human intent executable on microcontroller hardware.**
+
+---
+
+# Benchmark Principle
+
+Pluto should be evaluated by what the hardware actually does—not only by what Pluto says.
+
+```text
+Correct Text
+     ≠
+Correct Hardware
+```
+
+Therefore:
+
+> **A benchmark test passes only when the intended hardware behavior is correctly executed.**
+
+---
+
+# Summary
+
+**Pluto Benchmark v1.0**
+
+```text
+445 Test Cases
+10 Hardware Capabilities
+Real MCU Execution
+Persistent Memory Testing
+Communication Testing
+Timing & Frequency Testing
+Conditional Logic
+Multi-Operation Execution
+```
+
+### Core Coverage
+
+**GPIO → PWM → I²C → SPI → UART → Analog → Timers → FRAM → Conditional Logic → Multi-Operation Control**
+
+---
+
+## Pluto
+
+### Natural Language → Understanding → Structured Instruction → Hardware Execution
+
+Pluto explores a new interaction model for embedded systems:
+
+> **Instead of only programming the hardware, communicate with it.**
+
+---
 ### Core Idea
 
 **Natural Language → Understanding → Structured Instruction → Hardware Execution**
