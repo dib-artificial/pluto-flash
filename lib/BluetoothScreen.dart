@@ -393,7 +393,6 @@ class _BluetoothScreenState extends State<BluetoothScreen> {
     super.dispose();
   }
 
-  // সরাসরি গুগল ট্রান্সলেট লিংক ব্যবহার করে ফাংশন
   Future<void> _translateTextWithoutLibrary(String text) async {
     if (text.trim().isEmpty) return;
 
@@ -403,7 +402,6 @@ class _BluetoothScreenState extends State<BluetoothScreen> {
     });
 
     try {
-      // গুগলের ফ্রি ট্রান্সলেট এন্ডপয়েন্ট লিংক
       final url = Uri.parse(
         'https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=en&dt=t&q=${Uri.encodeComponent(text)}',
       );
@@ -411,10 +409,7 @@ class _BluetoothScreenState extends State<BluetoothScreen> {
       final response = await http.get(url);
 
       if (response.statusCode == 200) {
-        // গুগল ট্রান্সলেটের রেসপন্স একটি নেস্টেড লিস্ট (JSON) আকারে আসে
         final data = jsonDecode(response.body);
-
-        // অনুবাদের মূল টেক্সট প্রথম এরে-এর ভেতরে থাকে
         String translatedText = "";
         for (var item in data[0]) {
           translatedText += item[0];
