@@ -381,6 +381,15 @@ During the model training phase, the system is trained using a variety of input-
 > As for its potential applications, the Pluto Engine could be installed directly onto various devices, chips, or robotic systems. This would enable robots to think and behave much like humans—without the need for an external server—potentially elevating our existing hardware technology to an entirely new level.
 
 ---
+We conducted the following test using only the Pluto main engine. It was not physical hardware, but rather a computer simulation. The objective was to evaluate Pluto’s performance based on specific conditions and logic-driven tasks. Further details on this will be provided, including live sessions or through a real-world project.
+
+**However, I can share a few details:**
+
+In this setup, the 'Pluto engine' manages the wheels via servo signals sent through specific pins. Its primary function is to use a front-facing sensor to detect objects; upon detecting one, it issues signals to the wheel pins according to a set of instructions. That said, there is quite a bit more going on under the hood.
+
+<p align="center">
+  <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEieBLvPm9XjDQ0NJcTH_vAoFEBvrONxMxUSy_zLRCzzvLBGOmlK-F6VDL4UbEzd5QA5b_IZf98s6xcRNRlptgoI6AUucEMoHM_KxIcMAL9HhvJgcscicZakBx_p8gcH2NvnIvIs2C4EgTTyIsleMZ1cCL06Ziw1Q6Yl-3-pNL_kcN8eWx_aOa0XZrYnkg8/s1600/pluto_check.jpg">
+</p>
 
 
 > ## How to Access the Pluto Engine for Testing
