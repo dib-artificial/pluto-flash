@@ -392,15 +392,23 @@ In this setup, the 'Pluto engine' manages the wheels via servo signals sent thro
 </p>
 
 
-> ## How to Access the Pluto Engine for Testing
+
+>## How to Access the Pluto Engine for Testing
 >
-> The Pluto Engine is currently in the model development phase, with no companies or investors involved at this stage.
+>The Pluto Engine is currently in the research and development phase. I am working on this project independently, without company funding or investors.
 >
-> To protect the core architecture during development, direct access to the internal architecture, C++ source code, and executable files (such as `.elf` and compiled binaries) is not currently available.
+>At this stage, I am not distributing the C++ source code, internal architecture, or executable files directly. However, if you would like to test the Pluto Engine yourself, I can provide an **ESP32-S3 module with the >Pluto Engine pre-installed**, shipped to your address.
 >
-> **However, hardware-based testing is available.**
+>You can order the hardware unit here:
 >
-> If you are interested in evaluating the Pluto Engine, we can provide a hardware unit with the Pluto Engine pre-installed. You may choose the hardware platform that best suits your testing requirements.
+>**[Purchase Pluto Engine 0.3](https://nazdev.gumroad.com/l/pluto_0_3/)**
+>
+>The price covers the hardware and associated costs, including shipping. A portion of the proceeds will help fund my ongoing research, testing, and future development of the Pluto Engine.
+>
+>I am developing this project independently, and every purchase helps me continue working on it. I also welcome technical feedback and suggestions from experienced engineers and developers who are interested in evaluating the project.
+>
+>Thank you for your interest and support.
+
 
 ---
 
