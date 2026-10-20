@@ -388,7 +388,7 @@ We conducted the following test using only the Pluto main engine. It was not phy
 In this setup, the 'Pluto engine' manages the wheels via servo signals sent through specific pins. Its primary function is to use a front-facing sensor to detect objects; upon detecting one, it issues signals to the wheel pins according to a set of instructions. That said, there is quite a bit more going on under the hood.
 
 <p align="center">
-  <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEieBLvPm9XjDQ0NJcTH_vAoFEBvrONxMxUSy_zLRCzzvLBGOmlK-F6VDL4UbEzd5QA5b_IZf98s6xcRNRlptgoI6AUucEMoHM_KxIcMAL9HhvJgcscicZakBx_p8gcH2NvnIvIs2C4EgTTyIsleMZ1cCL06Ziw1Q6Yl-3-pNL_kcN8eWx_aOa0XZrYnkg8/s1600/pluto_check.jpg">
+  <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgib2NTjnSZrTLGed7zonVug_dFO31T8MKWQFvO-bHxe2KbUpyICencV35aTY3nKTV5fEWJX2Roc4vJcK8L6x_br60-3IHPHD9KtZKPGCtWEfZRFvS_PES8jaV6ioGpAemy2EjrLo1eRe243vcgGCKBxC-gkHLp8cKShjCiKC1hhynNbkhFziyhWSWMHFw/s1600/pluto_code_test.jpg">
 </p>
 
 
